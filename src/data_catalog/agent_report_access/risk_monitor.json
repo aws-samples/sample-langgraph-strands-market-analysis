@@ -1,0 +1,48 @@
+{
+  "reports": [
+    {
+      "report_name": "TradeActivity",
+      "description": "Tick-level trade data showing which brokers executed specific trades, including price, volume, and side.",
+      "question_types": [
+        "What trades did ALPHA_CAPITAL execute for AAPL on March 15?",
+        "Show me all sell trades by VERTEX_SECURITIES between 09:30 and 10:00."
+      ],
+      "order_by": "allowed",
+      "group_by": "not_allowed",
+      "distinct_on_columns": "not_allowed"
+    },
+    {
+      "report_name": "BrokerActivity",
+      "description": "Aggregated broker trading activity including buy/sell volumes, trade counts, and market share.",
+      "question_types": [
+        "What was ALPHA_CAPITAL's market share for AAPL on March 15?",
+        "Compare buy and sell volumes for PINNACLE_PARTNERS across all stocks."
+      ],
+      "order_by": "allowed",
+      "group_by": "allowed",
+      "distinct_on_columns": "not_allowed"
+    },
+    {
+      "report_name": "RiskScores",
+      "description": "Risk scores and anomaly flags for stock-broker combinations.",
+      "question_types": [
+        "Which brokers were flagged for anomalous activity on AAPL?",
+        "Show risk scores for all brokers trading TSLA."
+      ],
+      "order_by": "allowed",
+      "group_by": "allowed",
+      "distinct_on_columns": "not_allowed"
+    },
+    {
+      "report_name": "OrderBook",
+      "description": "Bid/ask snapshots showing spread, depth, and order book imbalance over time.",
+      "question_types": [
+        "Was there unusual order book imbalance when VERTEX_SECURITIES was selling AAPL?",
+        "Show the spread changes around the time of large broker trades."
+      ],
+      "order_by": "allowed",
+      "group_by": "not_allowed",
+      "distinct_on_columns": "not_allowed"
+    }
+  ]
+}

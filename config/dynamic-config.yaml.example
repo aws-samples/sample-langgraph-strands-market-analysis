@@ -1,0 +1,10 @@
+# Dynamic configuration for Market Surveillance AgentCore Runtime
+# This file is a template - copy to dynamic-config.yaml before deployment
+# The deployment scripts will populate the actual values
+
+# DO NOT commit dynamic-config.yaml to git (it contains deployment-specific ARNs)
+
+runtime:
+  arn: ""  # Populated by deploy-runtime.py after deployment
+  ecr_uri: ""  # Populated by deploy.sh after ECR push
+  endpoint_arn: ""  # Populated by deploy-runtime.py after endpoint creation

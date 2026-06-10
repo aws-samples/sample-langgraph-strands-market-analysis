@@ -1,0 +1,37 @@
+{
+  "reports": [
+    {
+      "report_name": "PriceBars",
+      "description": "Aggregated price bars at configurable time intervals including high/low prices, volume, and VWAP.",
+      "question_types": [
+        "Compare the trading volume of AAPL and MSFT over the morning session.",
+        "What was the price range for all stocks on March 15?"
+      ],
+      "order_by": "allowed",
+      "group_by": "allowed",
+      "distinct_on_columns": "allowed"
+    },
+    {
+      "report_name": "DailySnapshot",
+      "description": "End-of-day summary with open/close/high/low, total volume, and daily price change.",
+      "question_types": [
+        "What was the closing price for AAPL on March 14 and 15?",
+        "Which stock had the biggest daily move on March 15?"
+      ],
+      "order_by": "allowed",
+      "group_by": "allowed",
+      "distinct_on_columns": "not_allowed"
+    },
+    {
+      "report_name": "RiskScores",
+      "description": "Risk scores and anomaly flags for stock-broker combinations.",
+      "question_types": [
+        "Which stocks had the highest risk scores on March 15?",
+        "Were there any anomaly flags for MSFT?"
+      ],
+      "order_by": "allowed",
+      "group_by": "allowed",
+      "distinct_on_columns": "not_allowed"
+    }
+  ]
+}

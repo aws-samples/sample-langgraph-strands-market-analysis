@@ -1,0 +1,29 @@
+{
+  "displayName": "Order Book",
+  "reportName": "OrderBook",
+  "parameters": [
+    {
+      "name": "date",
+      "description": "Trading date or date range.",
+      "required": true,
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "name": "symbol",
+      "description": "Stock ticker symbol.",
+      "required": true,
+      "format": "string"
+    }
+  ],
+  "columns": [
+    { "name": "date", "description": "Snapshot date" },
+    { "name": "time", "description": "Snapshot time (HH:MM:SS)" },
+    { "name": "symbol", "description": "Stock ticker symbol" },
+    { "name": "bid_price", "description": "Best bid price" },
+    { "name": "bid_size", "description": "Total shares at best bid" },
+    { "name": "ask_price", "description": "Best ask price" },
+    { "name": "ask_size", "description": "Total shares at best ask" },
+    { "name": "spread", "description": "Bid-ask spread in USD" },
+    { "name": "depth_imbalance", "description": "Order book imbalance ratio (-1 to 1, positive = more bids)" }
+  ]
+}

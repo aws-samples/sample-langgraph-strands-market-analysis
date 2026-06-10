@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+.env
+.venv/
+venv/
+
+# Logs
+logs/
+*.log
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Distribution
+*.egg-info/
+dist/
+build/
+
+# Deployment temporary files
+deployment/*-final.json
+
+# Dynamic configuration (contains runtime ARNs)
+config/dynamic-config.yaml
+
+# Bedrock AgentCore starter-toolkit state (contains ARNs, account ID, local paths)
+.bedrock_agentcore.yaml
+
+# Internal design notes, diagrams, and dev tooling (not for publication)
+docs/
+scripts/
+
+# Local virtualenv and assistant tooling
+sample/
+.omc/

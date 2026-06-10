@@ -1,0 +1,11 @@
+# Static configuration for Market Surveillance AgentCore Runtime
+# This file contains configuration that doesn't change between deployments
+
+aws:
+  region: us-east-1
+  # account_id will be auto-detected during deployment
+  
+runtime:
+  name: market_surveillance_workflow
+  role_name: bedrock-agentcore-runtime-role
+  ecr_repo: market-surveillance-repo

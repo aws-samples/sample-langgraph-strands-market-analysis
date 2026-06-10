@@ -1,0 +1,26 @@
+{
+  "displayName": "Volume Profile",
+  "reportName": "VolumeProfile",
+  "parameters": [
+    {
+      "name": "date",
+      "description": "Trading date or date range.",
+      "required": true,
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "name": "symbol",
+      "description": "Stock ticker symbol.",
+      "required": true,
+      "format": "string"
+    }
+  ],
+  "columns": [
+    { "name": "date", "description": "Trading date" },
+    { "name": "symbol", "description": "Stock ticker symbol" },
+    { "name": "price_level", "description": "Price level bucket" },
+    { "name": "volume_at_price", "description": "Total shares traded at this price level" },
+    { "name": "pct_of_total", "description": "Percentage of total daily volume" },
+    { "name": "side_ratio", "description": "Buy ratio (0-1, where 0.5 = balanced)" }
+  ]
+}

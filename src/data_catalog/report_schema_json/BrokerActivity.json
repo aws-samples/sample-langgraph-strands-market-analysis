@@ -1,0 +1,27 @@
+{
+  "displayName": "Broker Summary",
+  "reportName": "BrokerActivity",
+  "parameters": [
+    {
+      "name": "date",
+      "description": "Trading date or date range.",
+      "required": true,
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "name": "broker",
+      "description": "Broker name to filter by.",
+      "required": false,
+      "format": "string"
+    }
+  ],
+  "columns": [
+    { "name": "date", "description": "Trading date" },
+    { "name": "broker", "description": "Broker name" },
+    { "name": "symbol", "description": "Stock ticker symbol" },
+    { "name": "buy_volume", "description": "Total shares bought" },
+    { "name": "sell_volume", "description": "Total shares sold" },
+    { "name": "num_trades", "description": "Number of trades executed" },
+    { "name": "market_share_pct", "description": "Broker's market share percentage" }
+  ]
+}

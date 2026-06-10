@@ -1,0 +1,30 @@
+{
+  "displayName": "Daily Snapshot",
+  "reportName": "DailySnapshot",
+  "parameters": [
+    {
+      "name": "date",
+      "description": "Trading date or date range.",
+      "required": true,
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "name": "symbol",
+      "description": "Stock ticker symbol.",
+      "required": false,
+      "format": "string"
+    }
+  ],
+  "columns": [
+    { "name": "date", "description": "Trading date" },
+    { "name": "symbol", "description": "Stock ticker symbol" },
+    { "name": "open", "description": "Opening price" },
+    { "name": "close", "description": "Closing price" },
+    { "name": "high", "description": "Day high price" },
+    { "name": "low", "description": "Day low price" },
+    { "name": "total_volume", "description": "Total shares traded" },
+    { "name": "total_trades", "description": "Total number of trades" },
+    { "name": "net_change", "description": "Price change from previous close" },
+    { "name": "change_pct", "description": "Percentage change from previous close" }
+  ]
+}

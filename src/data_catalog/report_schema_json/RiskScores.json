@@ -1,0 +1,25 @@
+{
+  "displayName": "Risk Alerts",
+  "reportName": "RiskScores",
+  "parameters": [
+    {
+      "name": "date",
+      "description": "Trading date or date range.",
+      "required": true,
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "name": "symbol",
+      "description": "Stock ticker symbol to filter by.",
+      "required": false,
+      "format": "string"
+    }
+  ],
+  "columns": [
+    { "name": "date", "description": "Alert date" },
+    { "name": "symbol", "description": "Stock ticker symbol" },
+    { "name": "broker", "description": "Broker name" },
+    { "name": "risk_score", "description": "Computed risk score (0.0 to 1.0)" },
+    { "name": "anomaly_flag", "description": "1 if anomalous activity detected, 0 otherwise" }
+  ]
+}

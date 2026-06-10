@@ -1,0 +1,48 @@
+{
+  "displayName": "Trades",
+  "reportName": "TradeActivity",
+  "parameters": [
+    {
+      "name": "date",
+      "description": "Trading date or date range.",
+      "required": true,
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "name": "symbol",
+      "description": "Stock ticker symbol.",
+      "required": false,
+      "format": "string"
+    }
+  ],
+  "columns": [
+    {
+      "name": "date",
+      "description": "Trade date"
+    },
+    {
+      "name": "time",
+      "description": "Trade execution time (HH:MM:SS)"
+    },
+    {
+      "name": "symbol",
+      "description": "Stock ticker symbol"
+    },
+    {
+      "name": "price",
+      "description": "Execution price in USD"
+    },
+    {
+      "name": "volume",
+      "description": "Number of shares traded"
+    },
+    {
+      "name": "side",
+      "description": "BUY or SELL"
+    },
+    {
+      "name": "broker",
+      "description": "Executing broker name"
+    }
+  ]
+}

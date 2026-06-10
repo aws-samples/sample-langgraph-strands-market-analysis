@@ -1,0 +1,34 @@
+{
+  "displayName": "Price Bars",
+  "reportName": "PriceBars",
+  "parameters": [
+    {
+      "name": "date",
+      "description": "Trading date or date range.",
+      "required": true,
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "name": "symbol",
+      "description": "Stock ticker symbol.",
+      "required": true,
+      "format": "string"
+    },
+    {
+      "name": "interval_minutes",
+      "description": "Bar interval in minutes.",
+      "required": true,
+      "format": "integer"
+    }
+  ],
+  "columns": [
+    { "name": "date", "description": "Bar date" },
+    { "name": "time", "description": "Bar start time (HH:MM:SS)" },
+    { "name": "symbol", "description": "Stock ticker symbol" },
+    { "name": "high", "description": "Highest price in the bar" },
+    { "name": "low", "description": "Lowest price in the bar" },
+    { "name": "volume", "description": "Total shares traded in the bar" },
+    { "name": "num_trades", "description": "Number of trades in the bar" },
+    { "name": "vwap", "description": "Volume-weighted average price" }
+  ]
+}
