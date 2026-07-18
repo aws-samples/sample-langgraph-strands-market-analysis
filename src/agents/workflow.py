@@ -2,6 +2,7 @@
 import asyncio
 import json
 import logging
+import os
 from typing import List, Dict, Any, TypedDict, Optional
 
 # Third-party imports
@@ -50,8 +51,37 @@ class Workflow:
     def __init__(self):
         # Initialize session management
         self.session_manager = SessionManager()
-        self.checkpointer = MemorySaver()
+        self.checkpointer = self._build_checkpointer()
         self.graph = self._create_workflow()
+
+    @staticmethod
+    def _build_checkpointer():
+        """Select the LangGraph checkpointer.
+
+        When BEDROCK_AGENTCORE_MEMORY_ID is present (the AgentCore starter
+        toolkit injects it into the runtime container after provisioning an
+        AgentCore Memory resource), use AgentCoreMemorySaver so graph state is
+        persisted durably in AgentCore Memory and can be resumed across
+        container restarts and scale-out. Otherwise fall back to an in-process
+        MemorySaver for local development. Requests must supply both thread_id
+        and actor_id in the run config for the AgentCore saver (see
+        stream_query).
+        """
+        memory_id = os.getenv("BEDROCK_AGENTCORE_MEMORY_ID")
+        if memory_id:
+            try:
+                from langgraph_checkpoint_aws import AgentCoreMemorySaver
+
+                region = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION") or "us-east-1"
+                logger.info(f"Using AgentCoreMemorySaver (memory_id={memory_id}, region={region})")
+                return AgentCoreMemorySaver(memory_id, region_name=region)
+            except Exception as e:
+                logger.error(
+                    f"Failed to initialize AgentCoreMemorySaver ({type(e).__name__}: {e}); "
+                    "falling back to in-process MemorySaver"
+                )
+        logger.info("Using in-process MemorySaver (BEDROCK_AGENTCORE_MEMORY_ID not set)")
+        return MemorySaver()
 
     def build_orchestrator_context(self, state: AgentState) -> str:
         """
@@ -433,7 +463,7 @@ Avoid redundant analysis if the previous results already address the new query."
         logger.info("LangGraph workflow compiled successfully.")
         return graph
 
-    async def stream_query(self, session_id: str, prompt: str):
+    async def stream_query(self, session_id: str, prompt: str, actor_id: str = "default-actor"):
         """Process query for specific session"""
         # Validate session exists, create if not found
         session_info = self.session_manager.get_session_info(session_id)
@@ -454,8 +484,10 @@ Avoid redundant analysis if the previous results already address the new query."
         logger.info(f"Inside Workflow: streaming query for session {session_id} (user: {session_info.get('user_id', 'unknown')})"
                     f" with prompt: {safe_log_text(prompt)}")
 
+        # thread_id maps to the AgentCore Memory session; actor_id is required
+        # by AgentCoreMemorySaver (and harmless for the in-process MemorySaver).
         config = {
-            "configurable": {"thread_id": session_id},
+            "configurable": {"thread_id": session_id, "actor_id": actor_id},
         }
 
         initial_state = {

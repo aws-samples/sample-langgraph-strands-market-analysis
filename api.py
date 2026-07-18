@@ -41,7 +41,9 @@ async def market_surveillance_workflow(payload):
         payload: Dictionary containing:
             - prompt: User query
             - session_id: Session identifier for conversation continuity
-            - actor_id: Optional actor identifier
+              (maps to the AgentCore Memory thread/session)
+            - actor_id: Optional actor identifier (defaults to "default-actor";
+              required by AgentCore Memory to scope checkpoints per actor)
     
     Yields:
         Streaming response chunks from the workflow
@@ -50,17 +52,19 @@ async def market_surveillance_workflow(payload):
         # Extract parameters from payload
         prompt = payload.get("prompt")
         session_id = payload.get("session_id", "default-session")
-        
-        logger.info(f"Workflow invocation - session: {session_id}")
-        
+        actor_id = payload.get("actor_id", "default-actor")
+
+        logger.info(f"Workflow invocation - session: {session_id}, actor: {actor_id}")
+
         if not prompt:
             yield "Error: No prompt provided in payload"
             return
-        
+
         # Stream workflow response
         async for chunk in workflow.stream_query(
             session_id=session_id,
-            prompt=prompt
+            prompt=prompt,
+            actor_id=actor_id
         ):
             yield chunk
             
