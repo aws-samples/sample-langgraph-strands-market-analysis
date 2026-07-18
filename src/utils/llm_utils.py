@@ -104,15 +104,32 @@ def invoke_STRANDS_llm_with_prompt(model,prompt):
 
 
 def parse_llm_json_response(response_text: str) -> dict:
-    """Parse and clean LLM JSON response"""
-    # Clean up response text and extract JSON
-    response_text = response_text.strip()
-    if response_text.startswith('```json'):
-        response_text = response_text[7:]
-    if response_text.endswith('```'):
-        response_text = response_text[:-3]
-    
-    parsed_response = json.loads(response_text.strip())
+    """Parse a JSON object from an LLM response.
+
+    Tolerant of the common shapes models emit: a bare JSON object, a Markdown
+    code fence (```json ... ``` or plain ``` ... ```), or a JSON object embedded
+    in surrounding prose. No specific fence or the word "json" is required.
+    """
+    candidate = response_text.strip()
+
+    # Strip a leading code fence (```json, ```JSON, or bare ```) and its closer.
+    if candidate.startswith("```"):
+        newline = candidate.find("\n")
+        if newline != -1:
+            candidate = candidate[newline + 1:]
+        if candidate.rstrip().endswith("```"):
+            candidate = candidate.rstrip()[:-3]
+    candidate = candidate.strip()
+
+    try:
+        parsed_response = json.loads(candidate)
+    except json.JSONDecodeError:
+        # Fall back to the first JSON object embedded anywhere in the text.
+        start = candidate.find("{")
+        if start < 0:
+            raise
+        parsed_response, _ = json.JSONDecoder().raw_decode(candidate[start:])
+
     safe_log_text = "".join(c for c in str(parsed_response)
                             if c.isascii() and (c.isprintable() or c.isspace()))
     logger.info(f"Parsed LLM response: {safe_log_text}")
@@ -121,33 +138,23 @@ def parse_llm_json_response(response_text: str) -> dict:
 
 def parse_agent_json_response(response_text):
     """
-    Parse the response from the agent, handling both pure JSON and JSON embedded in Markdown.
-    
+    Parse the response from the agent into a dict.
+
+    Delegates to parse_llm_json_response, which handles bare JSON, fenced JSON
+    (with or without a language tag), and JSON embedded in prose. Returns None
+    if no JSON object can be recovered.
+
     Args:
         response_text: The text response from the agent
-    
+
     Returns:
-        dict: The parsed JSON response or the original text if parsing fails
+        dict: The parsed JSON response, or None if parsing fails
     """
-    # Check if the response contains a JSON code block
     try:
-        if "```json" in response_text and "```" in response_text:
-            # Extract the JSON content from the code block including the markers
-            # so parse_llm_json_response can handle them properly
-            start_index = response_text.find("```json")
-            end_index = response_text.find("```", start_index + 7) + 3
-            json_str = response_text[start_index:end_index].strip()
-            
-            logger.info(f"Extracted JSON block from markdown: {json_str[:100]}...")
-            respone = parse_llm_json_response(json_str)
-            logger.info("Successfully parsed JSON block from agent response")
-            return respone
-        else:
-            # If no JSON block, try to parse the entire response as JSON
-            logger.info("No JSON block found, attempting to parse full response")
-            return parse_llm_json_response(response_text)
-    except:
-        pass
+        return parse_llm_json_response(response_text)
+    except Exception as e:
+        logger.warning(f"Could not parse JSON from agent response: {type(e).__name__}: {e}")
+        return None
 
 def safe_log_text(response: str) -> str:
     safe_text = ''.join(c for c in str(response)
