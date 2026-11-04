@@ -14,7 +14,7 @@ strands-agents-tools>=0.2.5
 streamlit==1.54.0
 uvicorn==0.34.3
 sseclient==0.0.27
-langgraph==1.2.4
+langgraph==1.2.14
 langgraph-checkpoint-aws==1.1.1
 langchain-community==0.4.2
 pandasql==0.7.3
